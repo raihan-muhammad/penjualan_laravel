@@ -109,6 +109,11 @@
               <i class="ni ni-planet text-blue"></i> Pegawai
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{{ route('kategori.index') }}">
+              <i class="ni ni-planet text-blue"></i> kategori
+            </a>
+          </li>
         </ul>
       </div>
     </div>
