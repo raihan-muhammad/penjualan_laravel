@@ -11,13 +11,13 @@ Edit Data - Kategori
         <div class="card">
             @include('alert.error')
             <div class="card-body">
-                <form action="{{ route('kategori.update', [$kategori->kd_kategori]) }}" method="POST">
+                <form action="{{ route('kategori.update', [$kategori->kd_kategori]) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     {{ method_field('PUT') }}
                     <div class="form-group">
-                        <label for="nama_kategori" class="col-sm-2 control-label">Nama Kategori</label>
+                        <label for="kategori" class="col-sm-2 control-label">Nama Kategori</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" value="{{ $kategori->kategori }}">
+                            <input type="text" class="form-control" id="kategori" name="kategori" value="{{ $kategori->kategori }}">
                         </div>
                     </div>
 

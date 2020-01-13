@@ -98,7 +98,37 @@ class KategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $kategori = Kategori::findOrFail($id);
+
+        $input = $request->all();
+
+        $validator = Validator::make($input,[
+            'kategori' => 'required|max:255',
+            'gambar_kategori' => 'sometimes|nullable|image|mimes:jpeg,jpg,png|max:2048'
+        ]);
+
+        if($validator->fails())
+        {
+            return redirect()->route('kategori.edit',[$id])->withErrors($validator);
+        }
+
+        if($request->hasFile('gambar_kategori')){
+            if($request->file('gambar_kategori')->isValid())
+            {
+                Storage::disk('upload')->delete($kategori->gambar_kategori);
+
+                $gambar_kategori = $request->file('gambar_kategori');
+                $extention = $gambar_kategori->getClientOriginalExtension();
+                $namaFoto = "kategori/".date('YmdHis').".".$extention;
+                $upload_path = 'public/uploads/kategori';
+                $request->file('gambar_kategori')->move($upload_path,$namaFoto);
+                $input['gambar_kategori'] = $namaFoto;
+            }
+        }
+
+        $kategori->update($input);
+        return redirect()->route('kategori.index')->with('status', 'kategori Berhasil di update');
+
     }
 
     /**
@@ -109,6 +139,9 @@ class KategoriController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $kategori = Kategori::findOrFail($id);
+        $kategori->delete();
+        Storage::disk('upload')->delete($kategori->gambar_kategori);
+        return redirect()->route('kategori.index')->with('status', 'Kategori Berhasil di hapus');
     }
 }
